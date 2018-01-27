@@ -52,9 +52,9 @@ function transfer(address _to, uint256 _value) returns (bool success) {
     reqiure(
         (balances[msg.sender] >= _value)
         && (_value > 0)
-        && (_to != address(0))
-        && (balances[_to].add(_value) >= balances[_to])
-        && (msg.data.length >= (2 * 32) + 4) 
+        && (_to != address(0)) // Mitigate against transfer to 0x0 address
+        && (balances[_to].add(_value) >= balances[_to]) // Overflow check
+        && (msg.data.length >= (2 * 32) + 4) // Mitigate against short address attack
     );
     
     balances[msg.sender] = balances[msg.sender].sub(_value);

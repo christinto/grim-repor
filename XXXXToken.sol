@@ -83,5 +83,4 @@ function allowance(address _owner, address _spender) constant returns (uint256 r
 
 event Transfer(address indexed _from, address indexed _to, uint256 _value);
 event Approval(address indexed _owner, address indexed _spender, uint256 _value);
-
 }

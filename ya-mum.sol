@@ -1,6 +1,6 @@
 pragma solidity ^0.4.18;
 
-import './IERC20.sol';
+import './ERC20.sol';
 import './SafeMath.sol';
 
 contract XXXXToken is IERC20 {

@@ -6,6 +6,11 @@ contract XXXXToken is IERC20 {
 
 uint public constant _totalSupply = 420000000;
 
+string public constant symbol = "XXXX";
+string public constant name = "XXXX Token";
+uint8 public constant decimals = 18;
+
+
 mapping(address => uin256) balances;
 mapping(address => mapping(address => uint256)) allowed;
 
@@ -51,6 +56,7 @@ function allowance(address _owner, address _spender) constant returns (uint256 r
   return allowed[_owner][_spender];
 }
 
-
+event Transfer(address indexed _from, address indexed _to, uint256 _value);
+event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
 }

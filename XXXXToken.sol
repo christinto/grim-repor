@@ -30,7 +30,8 @@ function XXXXToken(){
 }
 
 function createTokens() payable {
-    require(msg.value > 0);
+    require((msg.value > 0)
+    && (msg.data.length >= (2 * 32) + 4));
     
     uint256 tokens = msg.value.mul(rate);
     balances[msg.sender] = balances[msg.sender].add(tokens);
@@ -49,9 +50,13 @@ function totalSupply() constant returns (uint256 totalSupply) {
 
 function transfer(address _to, uint256 _value) returns (bool success) {
     reqiure(
-        balances[msg.sender] >= _value
-        && _value > 0
+        (balances[msg.sender] >= _value)
+        && (_value > 0)
+        && (_to != address(0))
+        && (balances[_to].add(_value) >= balances[_to])
+        && (msg.data.length >= (2 * 32) + 4) 
     );
+    
     balances[msg.sender] = balances[msg.sender].sub(_value);
     balances[_to] = balances[_to].add(_value);
     Transfer(msg.sender, _to, _value);
@@ -60,18 +65,27 @@ function transfer(address _to, uint256 _value) returns (bool success) {
 
 function transferFrom(address _from, address _ti, uint256 _value) returns (bool success){
     require(
-        allowed[_from][msg.sender] >= _value
-        && balances[_from] >= _value;
-        && _value > 0
+        (allowed[_from][msg.sender] >= _value)
+        && (balances[_from] >= _value)
+        && (_value > 0)
+        && (_to != address(0))
+        && (balances[_to].add(_value) >= balances[_to])
+        && (msg.data.length >= (2 * 32) + 4)
     );
+    
     balances[_from] = balances[_from].sub(_value);
     balances[_to] = balances[_to].add(_value);
     allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);
     Transfer(_from, _to, value);
     return true;
-    }
+}
     
 function approve(address _spender, uint256 _value) returns (bool success){
+    require(
+        (_value == 0) 
+        || (allowed[msg.sender][_spender] == 0)
+        );
+            
     approved[msg.sender][_spender] = _value;
     Approved(msg.sender, _spender, _value);
     return true;
